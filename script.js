@@ -1,131 +1,4 @@
-﻿const vehiclePhotos = {
-  SUV:"https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=1000&q=85",
-  Sedan:"https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=1000&q=85",
-  Hatchback:"https://images.unsplash.com/photo-1560958089-b8a1929cea89?auto=format&fit=crop&w=1000&q=85",
-  Pickup:"https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=1000&q=85",
-  Minivan:"https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=1000&q=85",
-  Electric:"https://images.unsplash.com/photo-1560958089-b8a1929cea89?auto=format&fit=crop&w=1000&q=85"
-};
-
-const vehiclePhotoOverrides = {
-  "toyota-corolla":"https://content.homenetiol.com/2000157/2065512/0x0/stock_images/8/2025TOC04_640/2025TOC042038825_640_05.jpg",
-  "toyota-corolla-cross":"https://uc.udn.com.tw/photo/2020/07/09/99/8159885.jpg",
-  "toyota-rav4":"https://www.dubicars.com/images/9e9da4/w_1300x760/al-madina-cars-fze/94ef3593-885f-42d3-a675-3c01ecb5c767.jpeg",
-  "toyota-harrier":"https://webcg.ismcdn.jp/mwimgs/6/b/1200/img_6b2690fb24049072937dfdfadedda4cb98756.jpg",
-  "toyota-land-cruiser-prado":"https://camry-drive.ru/wp-content/uploads/2023/08/2024-toyota-land-cruiser-exterior-front-view-camry-drive.ru_-1536x864.jpg",
-  "toyota-land-cruiser-300":"https://cdn1.unegui.mn/media/cache1/c9/72/c972df3f66481d58d36f265794353d9e.jpg",
-  "toyota-hilux":"https://img.chceauto.pl/toyota/hilux/toyota-hilux-pickup-4456-48897_v1.jpg",
-  "toyota-rush":"https://static.promediateknologi.id/crop/0x0%3A0x0/1200x0/webp/photo/p1/416/2025/01/20/WhatsApp-Image-2025-01-17-at-211024-619120403.jpeg",
-  "toyota-vitz":"https://carsguide.ikman.lk/wp-content/uploads/2024/07/vitz-featured.jpg",
-  "toyota-yaris":"https://images.carexpert.com.au/crop/1398/930/cms/v1/media/2025-04-2025-toyota-yaris-zr-4.jpg",
-  "toyota-noah":"https://s3-ap-southeast-2.amazonaws.com/nichibo/678357_d10b9a1f7f.jpg",
-  "toyota-fortuner":"https://dhzc82x38ceu.cloudfront.net/Prod/Stock_Item__c/a1pP2000003BTMjIAO/Image/1773848845274_1.jpeg",
-  "toyota-starlet-cross":"https://img-ik.cars.co.za/news-site-za/images/2024/07/Toyota_StarletCross05.jpg?tr=w-800",
-  "toyota-prius":"https://www.autoblog.com/.image/MjEyNTgwMzEyODIyMTMwMTg1/2025-toyota-prius-limited-4-128589.jpg?profile=w2560",
-  "byd-seal":"https://images.openai.com/static-rsc-4/366cPpOfYm5xlEhPTwUxNgXV1P1AKw7Xnb0xBikhHHW2Cu2GfQ5iNL1XkGC8jegqkNoNlCWQshOAOeBemZsa7qW30QnOH1asdQzmuGH-T84D4PlnwIGstoqojybQtSus2JviXlp1QdZ2ojt9uKqwHD22TyyTDZu9YZqoJlPwTxw?purpose=inline",
-  "byd-atto-3":"https://images.openai.com/static-rsc-4/Z4yKaFpwDCHv98oxhze9j8-ORmgyFw-4Kufi7WhsWS-EcSlg6qvw0ukNpmYqGg9fB4pXTP0Bf9V2YrRRpyk26wIJCsfhYDacYAD63IQFx1O9wqoKHIlVBINjbcL_xlkoPYmtHLA07s-SnCDdO43-YNUXPmJTH6iFRFIqenWpkTA?purpose=inline",
-  "byd-song-plus":"https://images.openai.com/static-rsc-4/Lc7oYeBlf8yvPG_4J-DmH2rc30_4PAi7jIzysnP2-Gm1DbX_f41PfSC9CpelmrEThRi0Lb11NqiXeJC5XUaZ69tA7kyQ7FYihO_LHyfw5KGWYZO9ObYlCxjCOc_da0lkYey6Zq_m-HUPaIHfbZPyil5RDymFmUn1aIXli5Ij7SU?purpose=inline",
-  "byd-dolphin":"https://images.openai.com/static-rsc-4/URhb91Flhtp7K0O2-bB4Nr0ftsAynsHlbiFbq9xsAjl5KJILVzMom-oNKdiFYyHHt-ooqse3vXi-mImj1_1T5GKa1iwSMLRrIGu-tdjvOxUALtZaSiIFJdltcYfiqaiW3d7gKF9C7ZXwGo0oCm_z8cO10kAjq4Xjm5Bc6Du4ZGM?purpose=inline",
-  "byd-shark-6":"https://images.openai.com/static-rsc-4/b-14GSSAleeT5smSZZ2SFGA8HFY0qBR01t_JlqHZLrXG0S9vnyRw4NKv7RACIYpFye16rdDRNBH7SaV6iW8WAyw--zs9NbId8lXnzJlsh7crtpSQKBaGaU2WNLeyvpQfkAJgT3CV8ZgbhBUMWxYEKqZoPjefAG4Jlsg3h9RmqwQ?purpose=inline",
-  "byd-leopard-5":"https://images.openai.com/static-rsc-4/zwVvtrk434KGG-WlEK6UilOgJ00C0l5I0Q5KSjJ2QYevEXMMjzEaK6819h3PMwslKfQ2VUlP__i323PFp4dluQsySn-5nW1q_Erq-Bx4M4eLhhgDEFZNxHawY4wyu1IDoYmlRwmPO67pT55r6YlQyws-7M1vERBC0YmOCEvIb0?purpose=inline",
-  "byd-leopard-8":"https://images.openai.com/static-rsc-4/0p1F4eMccameVbeoBKbVL5BhJVhRm_lRFH-OZyFz9FC6_bs_2e7HS-DpLYPmTb8mX8PzAsnWGEe4x-FPZsISSMAi2CLuSxcZtqjscgRS6mvNNGXNbqEtRyMvQMn3vO5eD0W8lB1xiPpO3Ye9pE1VyTdqn7lOChaUE7KDZdK4jyU?purpose=inline",
-  "byd-tang-l":"https://images.openai.com/static-rsc-4/kITjhcBjt5cf822E6xCXnobJlmLcralDwQsfBePzJGcd62PuhCh37treVf0bGww6A3g_9q3DBrt1PYLLJuBsUEA89muQWfl1ccwq1HtoT1n7CuovM-kHmpWG3WLqMTOOOHHEp3WTOkmZoIPQdVkF7dSta2D_BTVFn0nvjaMXBiA?purpose=inline",
-  "byd-yuan-up":"https://images.openai.com/static-rsc-4/i6mxaBggnAJpVTI6i57iYnpOQ_ta1C4wdbW_RXREdLkFkhpRI3Uv_TPTDOI0uJGLZpeTlOVN9Y3Js6LbhdDk_k5ubkTswVFYnlEcCPXpbKBPUQtNeuZXOc-CdLQAoGmIIeNdYFoQTJ6rSigs_LqcCGVcRGPESkT8KYeIo?purpose=inline",
-  "byd-atto-2":"https://images.openai.com/static-rsc-4/RCx2uRDX_ApwW4wkxoXuaZAanGuoaEed1juJRGnCflFYWnLxClvH3JnPZFojqwqy2btPkGCUJFNWxLUUkP3JNFdTJev_84VxBnlnVKvaxBS1_CueX1yD86slb2KElxJ6PhX_uxoUPSQYh62rLwPkDJTk6Mj28GkZhmaJHMmtC2c?purpose=inline",
-  "byd-sealion-7":"https://images.openai.com/static-rsc-4/hC0znwPKYT-vqyV5LTUsUqmqD-tAeWTD-_X0KKo94RRdVp_Hn1G2t_389NmUfLt_T_elctz0RxLQMGQ2_CVZBKvoOByTA4TeEYoS2GaBorZhi4JA7HSYkwqNYamq2Zmk9IixzYOgLGsr3m3f6XGiWeUtBs0G83dexNODDEeo4oplw?purpose=inline",
-  "byd-atto-8":"https://images.openai.com/static-rsc-4/itN2aMv5rE3YBERZgxntf7u7WnjKBKnWh_PwKxXN_GQVc9KTYsvftu62pHfuqyF7YbDunEdNKW4cMAwWYHi9z-1Z6dEM8qYK_XnlZj46Lxl2eaeFxb5H7v-VKN2Vm49-FZyjE4UjKW-V6F_qpUj36_lY8uy1PyqUozskzeJHvg0?purpose=inline",
-  "geely-riddara-rd6":"https://www.geely.ae/_next/image?q=90&url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2F8aq74th9%2Fproduction%2F0025ef09f85a5ca985678f6da6b4970f748661ca-950x730.jpg%3Ffit%3Dmax%26auto%3Dformat&w=3840",
-  "nissan-x-trail":"https://img.goo-net.com/sss/magazine/2026/05/16/1778929579.jpg",
-  "nissan-terra":"https://lhd.vigo4u.com/assets/product_photos/A-503/68ad799c2dd05.jpg",
-  "nissan-navara":"https://allcarsph.com/cdn/shop/files/rn-image_picker_lib_temp_836bb766-9ecb-40ab-8104-2e09975fbd49.jpg?v=1771912923&width=1946",
-  "suzuki-swift":"https://www.wakalatqatar.com/cars-blocks-details/9552.webp",
-  "suzuki-jimny":"https://img.supercarros.com/AdsPhotos/1024x768/0/13483541.jpg?wmo=378b314e178cd92ae0c2b3b7c3a64e2d2152b2f7c3adee4b8aca0827e05fc2bd2fddf888054c9c3710404a66ecf592c79923d174668eed42fc0beb88ed5a5400",
-  "suzuki-grand-vitara":"https://www.dubicars.com/images/a9c459/w_1300x760/milele-motors/5e6744f7-987d-4a03-a6bf-9225e18e52e6.jpeg",
-  "hyundai-tucson":"https://lachispa.mx/wp-content/uploads/2024/07/%C2%BFCuando-llega-a-Mexico-la-Hyundai-Tucson-2025_.png",
-  "hyundai-santa-fe":"https://acnews.blob.core.windows.net/imgnews/large/NAZ_3e561299ae0549b391222105e8eafe0c.webp",
-  "kia-sportage":"https://res.rac.com.au/rac-horizons/image/upload/c_limit%2Cw_3840/f_auto/q_auto%3Aeco/v1763109187/Kia_Sportage_1_test_drive_2025_n6cznc?_a=BAVMn6AQ0",
-  "kia-sorento":"https://img.autotrader.co.za/39176607/Crop860x650",
-  "volkswagen-polo":"https://www.arackarsilastirma.com/images/cars/2_2_4c54e_1.jpg",
-  "volkswagen-tiguan":"https://hips.hearstapps.com/hmg-prod/images/2025-volkswagen-tiguan-exterior-106-6509acb88d3a7.jpg?crop=1xw%3A1xh%3Bcenter%2Ctop",
-  "volkswagen-teramont":"https://syarah.com/carsguide/wp-content/uploads/2025/08/%D9%81%D9%88%D9%84%D9%83%D8%B3-%D9%88%D8%A7%D8%AC%D9%86-%D8%AA%D9%8A%D8%B1%D8%A7%D9%85%D9%88%D9%86%D8%AA-2025-2.webp",
-  "subaru-forester":"https://static.thairath.co.th/media/B6FtNKtgSqRqbnNsbQWXxhTjIpORpbHYIZsFxMp4wVxEdGrdFt4kOHfIavMJz7vEDhBJu.jpg",
-  "honda-fit":"https://sbimotor.com/uploads/car/images/112786/3539851_big_da8fb0f8.jpg",
-  "changan-hunter":"https://cdn.autopapo.com.br/box/uploads/2022/09/02183303/changan_hunter-azul-frente-parada.jpeg",
-  "foton-tunland-v9":"https://planetcars.com.br/wp-content/uploads/2024/07/tunland-2.webp",
-  "leapmotor-c10":"https://www.chasingcars.com.au/wp-content/uploads/2025/01/Leapmotor-C10-Design-2025-34.jpg"
-};
-
-const SAMPLE_USD_TO_RWF_RATE = 1476.19;
-
-function makeVehicle(make, model, type, dailyRate, power = "Petrol", photoUrl = "") {
-  const photoType = vehiclePhotos[type] ? type : type === "Crossover" ? "SUV" : type === "Hybrid" ? "SUV" : "Sedan";
-  const id = `${make}-${model}`.toLowerCase().replace(/[^a-z0-9]+/g,"-");
-  const image = photoUrl || vehiclePhotoOverrides[id] || vehiclePhotos[photoType];
-  return {
-    id,
-    make, model, type, dailyRate:Math.round(dailyRate * SAMPLE_USD_TO_RWF_RATE / 1000) * 1000, seats:type === "Pickup" ? 5 : type === "Minivan" ? 7 : type === "Coupe" ? 2 : 5,
-    available:true, mileage:"Ask for details", fuel:power, transmission:"Automatic",
-    image,
-    fallbackImage:vehiclePhotos[photoType],
-    alt:`${make} ${model}`,
-    tag:power === "Electric" ? "ELECTRIC" : type.toUpperCase(),
-    description:`${make} ${model} rental. Contact our team to confirm the exact vehicle specification, availability, and rental terms for your dates.`
-  };
-}
-
-const vehicles = [
-  makeVehicle("Toyota","Corolla","Sedan",55),
-  makeVehicle("Toyota","Corolla Cross","SUV",70,"Hybrid"),
-  makeVehicle("Toyota","RAV4","SUV",75,"Hybrid"),
-  makeVehicle("Toyota","Harrier","SUV",90,"Hybrid"),
-  makeVehicle("Toyota","Land Cruiser Prado","SUV",180),
-  makeVehicle("Toyota","Land Cruiser 300","SUV",240),
-  makeVehicle("Toyota","Hilux","Pickup",110),
-  makeVehicle("Toyota","Rush","SUV",65),
-  makeVehicle("Toyota","Vitz","Hatchback",40),
-  makeVehicle("Toyota","Yaris","Hatchback",45),
-  makeVehicle("Toyota","Noah","Minivan",85),
-  makeVehicle("Toyota","Fortuner","SUV",120),
-  makeVehicle("Toyota","Starlet Cross","Crossover",55),
-  makeVehicle("Toyota","Prius","Hybrid",65,"Hybrid"),
-  makeVehicle("BYD","Seal","Sedan",95,"Electric"),
-  makeVehicle("BYD","Atto 3","Electric",85,"Electric"),
-  makeVehicle("BYD","Song Plus","SUV",85,"Hybrid"),
-  makeVehicle("BYD","Dolphin","Hatchback",60,"Electric"),
-  makeVehicle("BYD","Shark 6","Pickup",135,"Hybrid"),
-  makeVehicle("BYD","Leopard 5","SUV",150,"Hybrid"),
-  makeVehicle("BYD","Leopard 8","SUV",190,"Hybrid"),
-  makeVehicle("BYD","Tang L","SUV",145,"Electric"),
-  makeVehicle("BYD","Yuan Up","SUV",70,"Electric"),
-  makeVehicle("BYD","Atto 2","SUV",75,"Electric"),
-  makeVehicle("BYD","Sealion 7","SUV",110,"Electric"),
-  makeVehicle("BYD","Atto 8","SUV",130,"Electric"),
-  makeVehicle("Geely Riddara","RD6","Pickup",120,"Electric"),
-  makeVehicle("Nissan","X-Trail","SUV",80),
-  makeVehicle("Nissan","Terra","SUV",105),
-  makeVehicle("Nissan","Navara","Pickup",110),
-  makeVehicle("Suzuki","Swift","Hatchback",42),
-  makeVehicle("Suzuki","Jimny","SUV",75),
-  makeVehicle("Suzuki","Grand Vitara","SUV",78,"Hybrid"),
-  makeVehicle("Hyundai","Tucson","SUV",80,"Hybrid"),
-  makeVehicle("Hyundai","Santa Fe","SUV",110,"Hybrid"),
-  makeVehicle("Kia","Sportage","SUV",78,"Hybrid"),
-  makeVehicle("Kia","Sorento","SUV",105,"Hybrid"),
-  makeVehicle("Volkswagen","Polo","Hatchback",50),
-  makeVehicle("Volkswagen","Tiguan","SUV",85),
-  makeVehicle("Volkswagen","Teramont","SUV",125),
-  makeVehicle("Subaru","Forester","SUV",85),
-  makeVehicle("Honda","Fit","Hatchback",45),
-  makeVehicle("Changan","Hunter","Pickup",95),
-  makeVehicle("Foton","Tunland V9","Pickup",125),
-  makeVehicle("Leapmotor","C10","SUV",90,"Electric"),
-  makeVehicle("Mercedes-Benz","GLE","SUV",180,"Petrol","https://images.openai.com/static-rsc-4/auyjHuwkhiStw2r4hORZ7Ko7TjX2DE-eNv7x7EM1nk5hu29e5cl2GzqAc7gTPr6G5YbmaWrT9iQAu5G9PMS-px6V_nD9sX2gRCy4exg-Ck4CXARn_x9MdoAG6xyA0ctJw08m93X3T36UthqVxcgxjAH22BVuTwPZ7nj4XV_dQxA?purpose=inline"),
-  makeVehicle("Mercedes-Benz","G-Class","SUV",250,"Petrol","https://images.openai.com/static-rsc-4/JUsmDSbChmq68TGo5l7NQ2qvuabC_u50crohbz2crwAQJPXa7KlX7aiCCdNk5TVB27mJkJN5H__iiPXkhf35ZvQnXDU43zy7qX3fdShKkiwB7ttjSLPUK76rzajDYJOvded1DRHQG4odQISSNrDgSEMj_9PXKz2oPCrV59njhnM?purpose=inline"),
-  makeVehicle("BMW","X5","SUV",160,"Petrol","https://images.openai.com/static-rsc-4/L_jcMVvMVg-wOre5yabsjPeAIDPQCZS4gUtfXd1pfeSXFH6PoCcearV1KrZ9PRq9sKIrFFJ6_6YsyqlBcYWGS5Fnlnl61WrwWuuewpx7-UDsth0ZdBaFUt8lPajhsGKLQdZkHPuybxuC_dl5podKTVbGB3eFxHsuv6NAnY68sEA?purpose=inline"),
-  makeVehicle("BMW","X7","SUV",220,"Petrol","https://images.openai.com/static-rsc-4/F_GX0Tqc3b9jKZtfrBjAm4QEd_uhHR3OmOywOLcW0gmKlY68UpX_9LPpn1tWv7LI1LvYmTSvjyhwXUREmr6CXqqf_0Q8U9KTh9HtpcWtmuAiaklGGquYy3z8wCUhh3r9ZOOvNLPOmLhvhzNbYmmKSyJPwo1UfoOI1Se6ZikxQyU?purpose=inline"),
-  makeVehicle("Land Rover","Range Rover Sport","SUV",220,"Petrol","https://images.openai.com/static-rsc-4/qq4F1G7K-q-TYDuC4AZa0t2RFW5hMTkoSNrLegRDme6i8-pl4xrTOutSkZlOTfLaCILxZVTT7sjZShhens2Zd7uuVmdq8OwT-LXkCfYdN_8hlfYbUDP_NMrsw99jHT2-964PY9G0neuymmNCy6nKtwQ8Z2444au537P2hX9gnOU?purpose=inline"),
-  makeVehicle("Porsche","Cayenne","SUV",220,"Petrol","https://images.openai.com/static-rsc-4/oxfDm_tYfZy_OPJQOoI5DssxH7xNSGFlTutjwN1jjwDXBCd03XKFob3l4l-nOCzS_DTmCvs2VG5em-gWb_HhrmzgtWiv64ogUa3E6N8BgSXkP3ke29mKflehm0vuocnXFCk-f8O6-1HijQnkALWSq3mdNAuQNZ-be6eepKmiGRc?purpose=inline")
-];
+﻿const vehicles = window.AutoXData.getFleet();
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const grid = $("#cars-grid");
@@ -193,8 +66,8 @@ function formatMoney(amount) {
 function rentalRates(car) {
   return {
     day: car.dailyRate,
-    week: car.dailyRate * 6,
-    month: Math.round(car.dailyRate * 25.5)
+    week: Number(car.weeklyRate) || car.dailyRate * 6,
+    month: Number(car.monthlyRate) || Math.round(car.dailyRate * 25.5)
   };
 }
 
@@ -392,6 +265,35 @@ $("#dialog-content").addEventListener("submit", event => {
   }
   const days = rentalDays(pickupValue, returnValue);
   const subject = `AutoX rental request - ${selectedVehicle.make} ${selectedVehicle.model}`;
+  const rentalRecord = {
+    id: `AX-${Date.now().toString(36).toUpperCase()}`,
+    reference: `AX-${Date.now().toString(36).toUpperCase()}`,
+    carId: selectedVehicle.id,
+    carName: `${selectedVehicle.make} ${selectedVehicle.model}`,
+    dailyRate: rentalRates(selectedVehicle).day,
+    estimatedTotal: estimateRentalTotal(selectedVehicle, days),
+    pickup: pickupValue,
+    return: returnValue,
+    pickupTime: form.elements["pickup-time"].value,
+    returnTime: form.elements["return-time"].value,
+    pickupLocation: form.elements["pickup-location"].value,
+    returnLocation: form.elements["return-location"].value,
+    passengers: form.elements.passengers.value,
+    name: form.elements["full-name"].value.trim(),
+    email: form.elements.email.value.trim(),
+    phone: form.elements.phone.value.trim(),
+    notes: form.elements.notes.value.trim(),
+    status: "Pending",
+    paymentStatus: "Unrecorded",
+    createdAt: new Date().toISOString()
+  };
+  try {
+    const requests = window.AutoXData.getRequests();
+    requests.unshift(rentalRecord);
+    window.AutoXData.saveRequests(requests);
+  } catch (error) {
+    showToast("Your email is ready, but this browser could not save the request for the admin dashboard.");
+  }
   const body = [
     `Car: ${selectedVehicle.make} ${selectedVehicle.model}`,
     `Estimated daily rate: ${formatMoney(rentalRates(selectedVehicle).day)}`,

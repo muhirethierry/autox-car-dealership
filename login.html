@@ -1,71 +1,20 @@
-﻿<!DOCTYPE html>
+﻿<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#07152b">
-  <meta name="description" content="Sign in to your AUTOX Car Rental account and get ready for your next drive.">
-  <title>Sign in | AUTOX Car Rental</title>
+  <link rel="icon" href="/assets/autox-favicon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://images.unsplash.com">
-  <link rel="icon" href="assets/autox-favicon.png" type="image/png">
   <link rel="preconnect" href="https://cdnjs.cloudflare.com">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-  <link rel="stylesheet" href="login.css">
-  <script src="login.js" defer></script>
+  <link rel="stylesheet" href="/login.css">
+  <title>AUTOX Car Rental</title>
 </head>
-<body class="auth-page">
-  <main class="auth-layout">
-    <section class="auth-story" aria-label="AUTOX Car Rental">
-      <a class="brand-lockup" href="index.html" aria-label="AUTOX Car Rental home"><img src="assets/autox-logo.svg" width="210" height="54" alt="AUTOX Rentals · Kigali"></a>
-      <div class="story-copy">
-        <span class="story-kicker"><span></span> THE ROAD IS YOURS</span>
-        <h1>Arrive in style.<br><em>Go your own way.</em></h1>
-        <p>Your next great drive is waiting. Sign in to pick up where your journey left off.</p>
-      </div>
-      <div class="story-footer"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Made for the journeys that start in Kigali</div>
-    </section>
-
-    <section class="auth-card" aria-labelledby="login-title">
-      <div class="card-topline"><span class="card-kicker">WELCOME BACK</span><span class="secure-mark"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> PRIVATE &amp; SECURE</span></div>
-      <h2 id="login-title">Sign in to AUTOX</h2>
-      <p class="card-intro">Enter your account details to continue.</p>
-
-      <form id="login-form" data-auth-form="login" novalidate>
-        <fieldset class="auth-fields" disabled>
-          <label class="field-label" for="login-email">Email address</label>
-          <div class="input-wrap">
-            <i class="fa-regular fa-envelope field-icon" aria-hidden="true"></i>
-            <input id="login-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" aria-describedby="login-email-error" required>
-          </div>
-          <span class="field-error" id="login-email-error"></span>
-
-          <label class="field-label password-label" for="login-password">Password</label>
-          <div class="input-wrap">
-            <i class="fa-solid fa-lock field-icon" aria-hidden="true"></i>
-            <input id="login-password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" minlength="8" aria-describedby="login-password-error" required>
-            <button class="password-toggle" type="button" data-toggle-password="login-password" aria-label="Show password" aria-pressed="false"><i class="fa-regular fa-eye" aria-hidden="true"></i></button>
-          </div>
-          <span class="field-error" id="login-password-error"></span>
-
-          <div class="form-options">
-            <label class="remember-option"><input type="checkbox" name="remember"><span class="custom-check" aria-hidden="true"></span><span>Remember me</span></label>
-            <button class="inline-link" type="button" data-auth-action="forgot">Forgot password?</button>
-          </div>
-
-          <button class="primary-button" type="submit"><span>Sign in</span><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
-
-          <div class="separator"><span>OR CONTINUE WITH</span></div>
-
-          <button class="google-button" type="button" data-auth-action="google"><i class="fa-brands fa-google" aria-hidden="true"></i><span>Continue with Google</span></button>
-        </fieldset>
-        <p class="auth-status" id="login-status" role="status" aria-live="polite"></p>
-      </form>
-
-      <p class="signup-prompt">New to AUTOX? <a href="signup.html">Create an account</a></p>
-      <p class="card-footnote"><i class="fa-solid fa-lock" aria-hidden="true"></i> Your details stay private. Authentication is not connected yet.</p>
-    </section>
-  </main>
-  <noscript><p class="noscript-note">Turn on JavaScript to use this sign-in demo. Your password will not be sent or saved.</p></noscript>
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
 </body>
 </html>
-

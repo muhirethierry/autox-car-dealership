@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="72" viewBox="0 0 280 72" fill="none" role="img" aria-labelledby="logo-title logo-desc">
+  <title id="logo-title">AUTOX Rentals</title>
+  <desc id="logo-desc">A gold road and car emblem beside the AUTOX Rentals wordmark.</desc>
+  <g stroke="#ffc928" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M10 51 28 13l18 38M18 35h20"/>
+    <path d="M8 58h43M15 64h29" opacity=".7"/>
+    <path d="M19 49h22l5 5v5H14v-5l5-5Z" fill="#07152b"/>
+    <path d="m23 49 3-5h9l4 5"/>
+    <circle cx="21" cy="59" r="2" fill="#ffc928"/><circle cx="37" cy="59" r="2" fill="#ffc928"/>
+  </g>
+  <text x="66" y="42" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-size="31" font-weight="800" letter-spacing="5">AUTOX</text>
+  <text x="68" y="60" fill="#ffc928" font-family="Arial, Helvetica, sans-serif" font-size="9" font-weight="700" letter-spacing="3.2">RENTALS · KIGALI</text>
+</svg>

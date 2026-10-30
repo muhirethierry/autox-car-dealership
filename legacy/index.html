@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Rent premium and everyday cars in Kigali with AutoX. Choose your dates, compare daily rates, and request your rental online.">
+  <meta name="theme-color" content="#07152b">
+  <link rel="icon" href="assets/autox-favicon.png" type="image/png">
+  <title>AutoX Rentals - Your Kigali trip, your way</title>
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link rel="stylesheet" href="style.css">
+  <script src="fleet-data.js" defer></script>
+  <script src="admin-data.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="logo" href="#home" aria-label="AutoX Rentals home"><img src="assets/autox-logo.svg" width="187" height="48" alt="AUTOX Rentals · Kigali"></a>
+    <button class="menu-toggle" id="menu-toggle" aria-label="Open navigation menu" aria-expanded="false" aria-controls="navigation">&#9776;</button>
+    <nav id="navigation" aria-label="Main navigation">
+      <a href="#booking">Book a car</a><a href="#fleet">Our fleet</a><a href="#how-it-works">How it works</a><a href="#contact">Contact</a><a class="nav-login" href="login.html">Login</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero rental-hero" id="home">
+      <video class="hero-video" id="hero-video" autoplay muted loop playsinline preload="metadata" poster="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=2000&q=90" aria-hidden="true" tabindex="-1">
+        <source src="assets/autox-hero.mp4" type="video/mp4">
+      </video>
+      <div class="hero-content">
+        <span class="eyebrow">AUTOX RENTALS · KIGALI</span>
+        <h1>More freedom.<br><span>Every mile.</span></h1>
+        <p>Find the right car for your Rwanda trip. Clear daily rates, a simple pickup, and help from our local team.</p>
+        <div class="hero-actions"><a class="btn" href="#booking">Find your car <span>&#8599;</span></a><a class="text-link" href="#fleet">Explore the fleet</a></div>
+        <div class="hero-proof"><span>Pickup across Kigali</span><span>Flexible rental periods</span></div>
+      </div>
+      <div class="hero-note"><span class="note-dot"></span> Your journey starts here</div>
+    </section>
+
+    <section class="booking-section" id="booking" aria-labelledby="booking-title">
+      <form class="booking-form" id="booking-form">
+        <div class="booking-heading"><span class="eyebrow">PLAN YOUR TRIP</span><h2 id="booking-title">Where are you headed?</h2></div>
+        <label class="booking-field location-field" for="pickup-location"><span>Pickup location</span><select id="pickup-location" required><option value="Kigali City Centre">Kigali City Centre</option><option value="Kigali International Airport">Kigali International Airport</option><option value="Kigali Convention Centre">Kigali Convention Centre</option></select></label>
+        <label class="booking-field" for="pickup-date"><span>Pickup date</span><input id="pickup-date" type="date" required></label>
+        <label class="booking-field" for="return-date"><span>Return date</span><input id="return-date" type="date" required></label>
+        <button class="btn booking-submit" type="submit">Browse available cars <span>&#8594;</span></button>
+      </form>
+      <p class="booking-summary" id="booking-summary" aria-live="polite">Choose your dates to see your trip estimate.</p>
+    </section>
+
+    <section class="inventory-section rental-fleet" id="fleet">
+      <div class="section-heading"><div><span class="eyebrow">THE AUTOX FLEET</span><h2>A car for every kind of trip.</h2><p>From city drives to scenic weekends, find your perfect fit. Sample rates and availability; our team confirms your final quote.</p></div><div class="inventory-count"><strong id="inventory-count">0</strong><span>cars in our fleet</span></div></div>
+      <div class="inventory-toolbar">
+        <label class="search-box"><span aria-hidden="true">&#8981;</span><input id="search-input" type="search" placeholder="Search make or model..." aria-label="Search rental cars"></label>
+        <label class="select-wrap"><span class="sr-only">Vehicle type</span><select id="type-filter"><option value="all">All vehicle types</option><option value="SUV">SUV</option><option value="Crossover">Crossover</option><option value="Sedan">Sedan</option><option value="Hatchback">Hatchback</option><option value="Pickup">Pickup</option><option value="Minivan">Minivan</option><option value="Hybrid">Hybrid</option><option value="Electric">Electric</option></select></label>
+        <label class="select-wrap"><span class="sr-only">Sort cars</span><select id="sort-select"><option value="featured">Featured first</option><option value="price-low">Daily rate: low to high</option><option value="price-high">Daily rate: high to low</option></select></label>
+      </div>
+      <div class="cars" id="cars-grid" aria-live="polite"></div>
+      <p class="empty-state" id="empty-state" hidden>No cars match your search. Try a different make or vehicle type.</p>
+    </section>
+
+    <section class="promise-section rental-how" id="how-it-works">
+      <div class="promise-intro"><span class="eyebrow">RENTING, MADE SIMPLE</span><h2>Your trip.<br>Your keys.<br><span>Your way.</span></h2><p>We make getting on the road straightforward, from choosing your car to returning it after your trip.</p></div>
+      <div class="promise-grid">
+        <article class="promise-card"><span class="promise-icon">01</span><h3>Choose your car</h3><p>Pick a vehicle that suits your plans and see its daily rate upfront.</p></article>
+        <article class="promise-card"><span class="promise-icon">02</span><h3>Request your dates</h3><p>Send our team your pickup location and dates. We will confirm availability.</p></article>
+        <article class="promise-card"><span class="promise-icon">03</span><h3>Pick up and go</h3><p>Meet us at your selected Kigali location, review the car, and start your drive.</p></article>
+        <article class="promise-card"><span class="promise-icon">04</span><h3>Local support</h3><p>Our Kigali team is here to help during your rental.</p></article>
+      </div>
+    </section>
+
+    <section class="rental-info" aria-label="Rental information">
+      <article><span class="info-mark">01</span><h3>Transparent daily rates</h3><p>See the listed rental rate before you send a request. Our team will confirm the final quote and any applicable fees.</p></article>
+      <article><span class="info-mark">02</span><h3>Flexible pickup</h3><p>Choose Kigali City Centre, Kigali International Airport, or Kigali Convention Centre when you request your car.</p></article>
+      <article><span class="info-mark">03</span><h3>Made for Rwanda</h3><p>Choose a comfortable city car or a capable SUV for the road ahead. Ask us about the best fit for your route.</p></article>
+    </section>
+
+    <section class="contact-section" id="contact"><div><span class="eyebrow">READY WHEN YOU ARE</span><h2>Let the road<br>take you somewhere.</h2><p>Have a question about a car, pickup, or your trip? Talk to our Kigali rental team.</p></div><div class="contact-actions"><a class="btn" href="mailto:hello@autox.example?subject=AutoX%20rental%20enquiry">Email our team <span>&#8599;</span></a><a class="contact-detail" href="tel:+250788000000">Call us<strong>+250 788 000 000</strong></a><span class="contact-detail">Find us<strong>Kigali, Rwanda</strong></span></div></section>
+  </main>
+  <footer><a class="logo" href="#home" aria-label="AutoX Rentals home"><img src="assets/autox-logo.svg" width="187" height="48" alt="AUTOX Rentals · Kigali"></a><p>Good trips start with the right car.</p><small>&copy; <span id="current-year"></span> AutoX Rentals. Drive safe, wherever you are headed.</small><a class="admin-footer-link" href="admin.html">Admin dashboard</a></footer>
+
+  <dialog class="vehicle-dialog rental-dialog" id="vehicle-dialog" aria-labelledby="dialog-title"><button class="dialog-close icon-button" data-close-dialog aria-label="Close rental details">&times;</button><div id="dialog-content"></div></dialog>
+  <dialog class="photo-dialog" id="photo-dialog" aria-label="Expanded vehicle photo"><button class="photo-dialog-close" data-close-photo aria-label="Close expanded photo">&times;</button><img id="photo-dialog-image" alt=""></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

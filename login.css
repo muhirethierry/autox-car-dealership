@@ -78,6 +78,15 @@ button{cursor:pointer}
 .signup-prompt a{margin-left:3px;color:#8a691c;font-weight:700;text-decoration:none;transition:color .2s}
 .card-footnote{display:flex;align-items:flex-start;justify-content:center;gap:7px;margin:19px 0 0;padding-top:14px;border-top:1px solid #edf0f3;color:#929ba7;text-align:center;font-size:9px;line-height:1.5}
 .card-footnote i{margin-top:2px;color:#8290a0;font-size:9px}
+.auth-icon{display:block;width:1em;height:1em;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.google-mark{font-family:Arial,sans-serif;font-size:14px;font-weight:700;line-height:1;color:#4285f4;stroke:none}
+.field-icon{width:14px;height:14px}
+.story-footer .auth-icon{color:var(--gold)}
+.secure-mark .auth-icon{color:#438162}
+.primary-button .auth-icon{color:var(--gold);transition:transform .2s}
+.primary-button:hover .auth-icon{transform:translateX(3px)}
+.google-button .google-mark{position:absolute;left:16px}
+.card-footnote .auth-icon{width:10px;height:10px;margin-top:2px;color:#8290a0}
 .signup-card .card-intro{margin-bottom:19px}
 .signup-card .field-label:not(:first-child){margin-top:10px}
 .signup-submit{margin-top:18px}
