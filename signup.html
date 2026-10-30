@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#07152b">
+  <meta name="description" content="Create your AUTOX Car Rental account.">
+  <title>Create account | AUTOX Car Rental</title>
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link rel="icon" href="assets/autox-logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link rel="stylesheet" href="login.css">
+  <script src="login.js" defer></script>
+</head>
+<body class="auth-page">
+  <main class="auth-layout signup-layout">
+    <section class="auth-story" aria-label="AUTOX Car Rental">
+      <a class="brand-lockup" href="index.html" aria-label="AUTOX Car Rental home"><img src="assets/autox-logo.svg" width="210" height="54" alt="AUTOX Rentals · Kigali"></a>
+      <div class="story-copy">
+        <span class="story-kicker"><span></span> YOUR NEXT DRIVE STARTS HERE</span>
+        <h1>Make room for<br><em>the open road.</em></h1>
+        <p>Create your AUTOX account and get ready for the journeys ahead.</p>
+      </div>
+      <div class="story-footer"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Made for the journeys that start in Kigali</div>
+    </section>
+
+    <section class="auth-card signup-card" aria-labelledby="signup-title">
+      <div class="card-topline"><span class="card-kicker">JOIN AUTOX</span><span class="secure-mark"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> PRIVATE &amp; SECURE</span></div>
+      <h2 id="signup-title">Create your account</h2>
+      <p class="card-intro">A few details, then youâ€™re ready to plan your next drive.</p>
+
+      <form id="signup-form" data-auth-form="signup" novalidate>
+        <fieldset class="auth-fields" disabled>
+          <label class="field-label" for="signup-name">Full name</label>
+          <div class="input-wrap">
+            <i class="fa-regular fa-user field-icon" aria-hidden="true"></i>
+            <input id="signup-name" name="name" type="text" autocomplete="name" placeholder="Your full name" minlength="2" aria-describedby="signup-name-error" required>
+          </div>
+          <span class="field-error" id="signup-name-error"></span>
+
+          <label class="field-label" for="signup-email">Email address</label>
+          <div class="input-wrap">
+            <i class="fa-regular fa-envelope field-icon" aria-hidden="true"></i>
+            <input id="signup-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" aria-describedby="signup-email-error" required>
+          </div>
+          <span class="field-error" id="signup-email-error"></span>
+
+          <label class="field-label" for="signup-password">Password</label>
+          <div class="input-wrap">
+            <i class="fa-solid fa-lock field-icon" aria-hidden="true"></i>
+            <input id="signup-password" name="password" type="password" autocomplete="new-password" placeholder="At least 8 characters" minlength="8" aria-describedby="signup-password-error" required>
+            <button class="password-toggle" type="button" data-toggle-password="signup-password" aria-label="Show password" aria-pressed="false"><i class="fa-regular fa-eye" aria-hidden="true"></i></button>
+          </div>
+          <span class="field-error" id="signup-password-error"></span>
+
+          <label class="field-label" for="signup-confirm-password">Confirm password</label>
+          <div class="input-wrap">
+            <i class="fa-solid fa-lock field-icon" aria-hidden="true"></i>
+            <input id="signup-confirm-password" name="confirm-password" type="password" autocomplete="new-password" placeholder="Enter your password again" aria-describedby="signup-confirm-error" required>
+            <button class="password-toggle" type="button" data-toggle-password="signup-confirm-password" aria-label="Show password" aria-pressed="false"><i class="fa-regular fa-eye" aria-hidden="true"></i></button>
+          </div>
+          <span class="field-error" id="signup-confirm-error"></span>
+
+          <button class="primary-button signup-submit" type="submit"><span>Create account</span><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
+        </fieldset>
+        <p class="auth-status" id="signup-status" role="status" aria-live="polite"></p>
+      </form>
+
+      <p class="signup-prompt">Already have an account? <a href="login.html">Sign in</a></p>
+      <p class="card-footnote"><i class="fa-solid fa-lock" aria-hidden="true"></i> Account creation is not connected yet. Your details are not stored.</p>
+    </section>
+  </main>
+  <noscript><p class="noscript-note">Turn on JavaScript to use this sign-up demo. Your details will not be sent or saved.</p></noscript>
+</body>
+</html>
+
