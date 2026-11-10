@@ -1,43 +1,35 @@
-# AUTOX React + Vite migration plan
+# AUTOX full-stack migration status
 
-## Visual and behavior reference
+## Existing architecture
 
-The current source of truth is the existing site in this repository. Keep its three visual systems intact: rental landing page (`style.css`), authentication (`login.css`), and the rental operations dashboard (`admin.css`). Preserve the current logo, favicon, hero video, remote vehicle photos/fallback behavior, Google Fonts, Font Awesome icons, color tokens, breakpoints, animations, and copy.
+- React 19, React Router, and Vite serve `/`, `/login.html`, `/signup.html`, and `/admin.html`.
+- Existing AUTOX CSS, fonts, media, logo, local fleet data, and browser storage adapter are retained. Original source snapshots remain under `legacy/`.
+- Express 5 serves `/api` with Zod validation, Helmet, same-origin development proxy, rate limiting, MariaDB-backed sessions, and session-bound CSRF protection.
+- Prisma 7 schema and an initial SQL migration define users/roles, vehicles, bookings, payments, maintenance, and admin activity. Prisma's MariaDB adapter connects through `DATABASE_URL`.
 
-## Current architecture found
+## Implemented in the prototype
 
-- The repository has no package manifest, Vite configuration, React source, or dependency lockfile.
-- `index.html` and `script.js` render the customer landing page, booking dialogs, fleet search/filter/sort, rental requests, and localStorage persistence.
-- `fleet-data.js` supplies 51 default vehicle records. `admin-data.js` is the shared localStorage adapter; `admin.js` drives the fleet/booking operations UI; `admin-reports.js` calculates and renders dashboard reports.
-- `login.html` and `signup.html` share `login.css` and `login.js`; their forms are frontend-only and must remain explicitly so.
-- `admin.html` and `admin.css` define the dashboard UI. The current UI JavaScript is imperative and depends on stable DOM IDs and event delegation.
-- `assets/` currently contains the AUTOX SVG logo, hero MP4, and favicon. Most vehicle photographs are remote URLs with fallbacks in the fleet records.
-- Existing localStorage keys include `autoxFleetAdminState` and `autoxRentalRequests`, plus dashboard records. Keep these keys and data shapes readable during migration.
-- Existing responsive breakpoints are in `style.css`, `login.css`, and `admin.css`; leave the styles byte-for-byte unchanged during the initial parity pass.
+- The admin dashboard is split into React section components. Its existing dark navy/gold design is retained and mobile overflow handling is included.
+- The customer site, admin fleet, booking actions, and customer directory can use API records; localStorage remains a fallback for existing preview data.
+- Sign-up and sign-in use server-managed sessions. Passwords are hashed using Node's built-in scrypt, never returned to the browser or stored in localStorage. Admin privileges are read from the database for each protected API request.
+- Booking creation and approval lock the vehicle row and check overlapping holds plus maintenance within a transaction.
+- Admin payment entries are pending/unverified. Revenue aggregation counts only records with a provider-verified status.
+- A dry-run fleet import previews missing default fleet rows; `--apply` inserts only missing records.
+- Node tests cover password hashing, CSRF token binding, rental package calculation, and booking overlap rules. Playwright smoke tests cover the public pages and mobile layout.
 
-## Migration approach
+## Setup sequence
 
-1. Preserve all current HTML, CSS, JavaScript, and fleet data in a `legacy/` reference folder before changing entry points. Keep `assets/` in place and reuse the existing media.
-2. Add a root Vite/React application with React Router routes for `/`, `/login.html`, `/signup.html`, and `/admin.html`; preserve those familiar URLs.
-3. Build separate React page modules and a small shared app/router shell. Keep the existing CSS files as the first-pass visual source of truth; avoid a CSS framework and do not rewrite style values during conversion.
-4. Reuse the fleet defaults and existing storage adapter at first, preserving its keys and migration behavior. Add a React context/service boundary so the imperative page controllers can be migrated incrementally without splitting the data store.
-5. Move customer, auth, and admin views one at a time. Keep frontend-only authentication and unverified payment limitations visible; do not store passwords or claim secure authorization.
-6. Build and run the reference and React app at desktop/mobile viewport sizes. Compare screenshots and test core flows before treating parity as complete.
+Follow the full local setup in `README.md`: configure `.env`, start MariaDB, run Prisma generation/migration, preview and apply fleet import, create the initial Super Admin, then run the API and Vite in separate terminals.
 
-## Acceptance checks
+## Remaining before production
 
-- Vite build succeeds and direct visits to all four routes resolve.
-- Existing CSS and local assets are reused without a theme/layout rewrite.
-- Hero video, fleet cards, booking request persistence, login/signup validation, and dashboard fleet/booking actions remain functional.
-- Legacy fleet and request localStorage data survives refresh and is not overwritten by defaults.
-- Desktop/tablet/mobile screenshots are visually reviewed against the preserved reference before calling the migration complete.
+- Configure a production MariaDB provider, HTTPS, secrets, backups, same-site API routing, and monitoring.
+- Connect remaining dashboard sections (payments, maintenance, reports, settings, notifications, reviews, and activity) to their authoritative database records; finish migration of existing browser-only data through an explicit export/import process.
+- Implement email verification/reset flows with a configured mail provider; configure Google OAuth only if desired.
+- Integrate MTN MoMo/Airtel Money sandbox and production credentials, signed callback/webhook verification, status reconciliation, idempotency, refunds, and provider-specific operations.
+- Run browser acceptance checks with a real local MariaDB, including admin CRUD, customer booking conflicts, role restrictions, and data consistency across devices.
+- Set the trusted `APP_ORIGIN`, production cookie flags, and hosting configuration. Deployment is not performed by this repository setup.
 
-## Known limitations until a backend exists
+## Architecture boundary
 
-Browser localStorage remains local to one browser. It is not multi-user storage or access control. Login/signup stay UI-only, password fields are never persisted, and payment notes remain unverified. Production authorization, sessions, shared records, and payment-provider verification require a backend.
-
-## Current migration progress
-
-- Complete: source backup, Vite multi-page setup, React Router and data contexts, unchanged customer-site CSS, homepage React state/actions, and React login/signup forms.
-- Compatibility bridge: the admin page mounts its preserved HTML template and runs its existing controller as a page module. This keeps all current fleet/request/report behavior available while that dashboard is converted section by section.
-- Still required before final acceptance: migrate the admin dashboard controller into React components/state, then complete desktop/tablet/mobile visual comparison and interactive browser checks.
+Browser localStorage is only a local preview/fallback and is not shared or authoritative. Only API/database data is shared across sessions. The current implementation is a development prototype, not production-ready payment or business software.

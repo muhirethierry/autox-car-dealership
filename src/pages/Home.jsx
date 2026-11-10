@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useFleet } from "../context/FleetContext.jsx";
 import VehicleDetails from "../components/VehicleDetails.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
+import { apiRequest } from "../services/apiClient.js";
+import { useNavigate } from "react-router";
 
 const LOCATIONS = ["Kigali City Centre","Kigali International Airport","Kigali Convention Centre"];
 const CATEGORIES = ["SUV","Crossover","Sedan","Hatchback","Pickup","Minivan","Hybrid","Electric"];
@@ -35,7 +38,9 @@ function VehicleCard({car,onDetails,onPhoto}) {
 
 export default function Home() {
   const {getFleet}=useFleet();
-  const fleet=getFleet();
+  const auth=useAuth(),navigate=useNavigate();
+  const [remoteFleet,setRemoteFleet]=useState(null);
+  const fleet=remoteFleet??getFleet();
   const [query,setQuery]=useState(""),[type,setType]=useState("all"),[sort,setSort]=useState("featured");
   const [pickupLocation,setPickupLocation]=useState(LOCATIONS[0]);
   const [pickup,setPickup]=useState(""),[returnDate,setReturnDate]=useState("");
@@ -52,6 +57,7 @@ export default function Home() {
     return rows;
   },[fleet,query,type,sort]);
   useEffect(()=>{document.title="AutoX Rentals - Your Kigali trip, your way";},[]);
+  useEffect(()=>{let active=true;apiRequest("/vehicles").then(result=>{if(active)setRemoteFleet(result.vehicles.map(vehicle=>({id:vehicle.id,make:vehicle.brand,model:vehicle.model,year:vehicle.year,type:vehicle.category,category:vehicle.category,dailyRate:Number(vehicle.dailyRate),weeklyRate:Number(vehicle.weeklyRate),monthlyRate:Number(vehicle.monthlyRate),seats:vehicle.seats,fuel:vehicle.fuelType,transmission:vehicle.transmission,image:vehicle.imageUrl||"",fallbackImage:vehicle.imageUrl||"",available:vehicle.status==="AVAILABLE",description:vehicle.description,alt:`${vehicle.brand} ${vehicle.model}`})));}).catch(()=>{});return()=>{active=false;};},[]);
   useEffect(()=>{
     const video=heroVideo.current,preference=window.matchMedia("(prefers-reduced-motion: reduce)");
     const sync=()=>{if(preference.matches)video?.pause();else video?.play().catch(()=>{});};
@@ -70,16 +76,15 @@ export default function Home() {
     if(days<1){notify("Please choose a return date after your pickup date.");return;}
     document.querySelector("#fleet")?.scrollIntoView({behavior:"smooth"});
   }
-  function submitRequest(event) {
+  async function submitRequest(event) {
     event.preventDefault();
     const form=event.currentTarget,pickupValue=form.elements.pickup.value,returnValue=form.elements.return.value;
     if(dayCount(pickupValue,returnValue)<1){notify("Return date must be after pickup date.");return;}
     const car=selected;if(!car)return;
-    const duration=dayCount(pickupValue,returnValue),rates=ratesFor(car),reference=`AX-${Date.now().toString(36).toUpperCase()}`;
-    const request={id:reference,reference,carId:car.id,carName:`${car.make} ${car.model}`,dailyRate:rates.day,estimatedTotal:estimate(car,duration),pickup:pickupValue,return:returnValue,pickupTime:form.elements["pickup-time"].value,returnTime:form.elements["return-time"].value,pickupLocation:form.elements["pickup-location"].value,returnLocation:form.elements["return-location"].value,passengers:form.elements.passengers.value,name:form.elements["full-name"].value.trim(),email:form.elements.email.value.trim(),phone:form.elements.phone.value.trim(),notes:form.elements.notes.value.trim(),status:"Pending",paymentStatus:"Unrecorded",createdAt:new Date().toISOString()};
-    try{const requests=window.AutoXData.getRequests();requests.unshift(request);if(!window.AutoXData.saveRequests(requests))notify("Your email is ready, but this browser could not save the request for the admin dashboard.");}catch{notify("Your email is ready, but this browser could not save the request for the admin dashboard.");}
-    const body=[`Car: ${car.make} ${car.model}`,`Estimated daily rate: ${formatMoney(rates.day)}`,`Estimated weekly package: ${formatMoney(rates.week)}`,`Estimated monthly package: ${formatMoney(rates.month)}`,`Estimated rental total: ${formatMoney(estimate(car,duration))} for ${duration} days`,`Pickup: ${pickupValue} at ${form.elements["pickup-time"].value}`,`Return: ${returnValue} at ${form.elements["return-time"].value}`,`Pickup location: ${form.elements["pickup-location"].value}`,`Return location: ${form.elements["return-location"].value}`,`Passengers: ${form.elements.passengers.value}`,`Name: ${request.name}`,`Email: ${request.email}`,`Phone: ${request.phone}`,`Special requests: ${request.notes||"None"}`,"Please confirm availability and the final rental terms."].join("\n");
-    window.location.href=`mailto:hello@autox.example?subject=${encodeURIComponent(`AutoX rental request - ${car.make} ${car.model}`)}&body=${encodeURIComponent(body)}`;
+    if(!auth.authenticated){notify("Sign in or create an account before submitting a rental request.");vehicleDialog.current?.close();navigate("/login.html");return;}
+    const duration=dayCount(pickupValue,returnValue);
+    const notes=[`Customer name: ${form.elements["full-name"].value.trim()}`,`Customer email: ${form.elements.email.value.trim()}`,`Customer phone: ${form.elements.phone.value.trim()}`,`Return location: ${form.elements["return-location"].value}`,`Pickup time: ${form.elements["pickup-time"].value}`,`Return time: ${form.elements["return-time"].value}`,`Passengers: ${form.elements.passengers.value}`,`Customer note: ${form.elements.notes.value.trim()||"None"}`].join("\n");
+    try{const result=await apiRequest("/bookings",{method:"POST",body:{vehicleId:car.id,pickupLocation:form.elements["pickup-location"].value,pickupAt:`${pickupValue}T${form.elements["pickup-time"].value||"10:00"}:00`,returnAt:`${returnValue}T${form.elements["return-time"].value||"10:00"}:00`,notes}});vehicleDialog.current?.close();setSelected(null);notify(`Request ${result.booking.reference} received. Estimated total: ${formatMoney(Number(result.booking.totalAmount)||estimate(car,duration))}. AUTOX will confirm your dates.`);}catch(error){notify(error.message);if(error.status===401){vehicleDialog.current?.close();navigate("/login.html");}}
   }
   function closeMenu(){setMenuOpen(false);}
   function showPhoto(car){setPhoto({car,src:car.image,usedFallback:false});}

@@ -7,6 +7,7 @@ const root = process.cwd();
 export default defineConfig({
   plugins:[react()],
   publicDir:resolve(root,"public"),
+  server:{proxy:{"/api":{target:"http://127.0.0.1:4000",changeOrigin:false}}},
   build:{
     rollupOptions:{
       input:{

@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import { useAuth } from "../context/AuthContext.jsx";
 
 const validEmail = value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
 
@@ -14,7 +16,7 @@ const iconPaths = {
 };
 
 function AuthIcon({name,className=""}) {
-  if (name === "google") return <span className={`auth-icon google-mark ${className}`} aria-hidden="true">G</span>;
+  if (name === "google") return <svg className={`auth-icon google-mark ${className}`} viewBox="0 0 48 48" aria-hidden="true"><path fill="#4285F4" d="M43.611 20.083H42V20H24v8h11.303c-.539 2.87-2.17 5.308-4.637 6.947l7.72 5.99C43.066 37.136 46 31.112 46 24c0-1.341-.138-2.65-.389-3.917Z"/><path fill="#34A853" d="M24 46c6.48 0 11.91-2.15 15.88-5.82l-7.72-5.99C30.02 35.66 27.22 36.5 24 36.5c-5.1 0-9.43-3.44-10.98-8.08l-7.96 6.14C9 41.43 16 46 24 46Z"/><path fill="#FBBC05" d="M13.02 28.42a12.5 12.5 0 0 1 0-8.84l-7.96-6.14a22 22 0 0 0 0 21.12l7.96-6.14Z"/><path fill="#EA4335" d="M24 11.5c3.53 0 6.7 1.22 9.2 3.6l6.86-6.86C35.9 4.38 30.47 2 24 2 16 2 9 6.57 5.06 13.44l7.96 6.14C14.57 14.94 18.9 11.5 24 11.5Z"/></svg>;
   return <svg className={`auth-icon ${className}`} viewBox="0 0 24 24" aria-hidden="true">{iconPaths[name]}</svg>;
 }
 
@@ -32,6 +34,7 @@ function Field({id,label,name,type="text",placeholder,autoComplete,icon,minLengt
 }
 
 export default function AuthPage({mode}) {
+  const auth=useAuth(),navigate=useNavigate();
   const signup=mode==="signup";
   const [visible,setVisible]=useState({}),[errors,setErrors]=useState({}),[status,setStatus]=useState({message:"",state:""});
   useEffect(()=>{
@@ -44,17 +47,22 @@ export default function AuthPage({mode}) {
     const form=event.currentTarget,values=new FormData(form),next={};
     const email=String(values.get("email")||"");
     const password=String(values.get("password")||"");
-    if(signup&&String(values.get("name")||"").trim().length<2)next["signup-name"]="Enter your full name.";
+    if(signup&&String(values.get("name")||"").trim().split(/\s+/).length<2)next["signup-name"]="Enter your first and last name.";
     if(!email.trim())next[`${mode}-email`]="Enter your email address.";
     else if(!validEmail(email))next[`${mode}-email`]="Enter a valid email address.";
-    if(password.length<8)next[`${mode}-password`]=signup?"Use at least 8 characters for your password.":"Password must be at least 8 characters.";
+    if(signup&&password.length<12)next[`${mode}-password`]="Use at least 12 characters for your password.";
+    if(signup&&password.length>=12&&(!/[A-Z]/.test(password)||!/[a-z]/.test(password)||!/[0-9]/.test(password)))next[`${mode}-password`]="Include an uppercase letter, a lowercase letter and a number.";
+    if(!signup&&password.length<1)next[`${mode}-password`]="Enter your password.";
     if(signup){const confirmation=String(values.get("confirm-password")||"");if(!confirmation)next["signup-confirm-password"]="Confirm your password.";else if(confirmation!==password)next["signup-confirm-password"]="The passwords do not match.";}
     setErrors(next);
     if(Object.keys(next).length){setStatus({message:"Please review the highlighted fields.",state:"error"});document.getElementById(Object.keys(next)[0])?.focus();return;}
-    setStatus({message:signup?"Your details look valid, but account creation is not connected yet. No account was created and nothing was saved.":"Your details look valid, but sign-in is not connected yet. Nothing was sent or saved.",state:"info"});
+    if(auth.mode!=="api"){setStatus({message:"Authentication is not available. No account details were sent or stored.",state:"error"});return;}
+    const payload=signup?{email,password,firstName:String(values.get("name")).trim().split(/\s+/)[0],lastName:String(values.get("name")).trim().split(/\s+/).slice(1).join(" ")}:{email,password,remember:values.get("remember")==="on"};
+    setStatus({message:signup?"Creating your account…":"Signing you in…",state:"info"});
+    (signup?auth.signUp(payload):auth.signIn(payload)).then(user=>navigate(signup?"/":user.role==="MANAGER"||user.role==="SUPER_ADMIN"?"/admin.html":"/index.html")).catch(error=>setStatus({message:error.message,state:"error"}));
   }
   function action(kind) {
-    const messages={google:"Google sign-in is not configured yet. No sign-in was attempted.",forgot:"Password reset is not available until AUTOX authentication is connected."};
+    const messages={google:"Google sign-in needs OAuth client credentials and provider configuration.",forgot:"Password reset requires a verified email delivery service; it is not available yet."};
     setStatus({message:messages[kind]||"",state:"info"});
   }
 
@@ -72,7 +80,7 @@ export default function AuthPage({mode}) {
         <fieldset className="auth-fields">
           {signup&&<Field id="signup-name" label="Full name" name="name" placeholder="Your full name" autoComplete="name" icon="user" minLength={2} error={errors["signup-name"]} />}
           <Field id={`${mode}-email`} label="Email address" name="email" type="email" placeholder="you@example.com" autoComplete="email" icon="envelope" error={errors[`${mode}-email`]} />
-          <Field id={`${mode}-password`} label="Password" name="password" type="password" placeholder={signup?"At least 8 characters":"Enter your password"} autoComplete={signup?"new-password":"current-password"} icon="lock" minLength={8} error={errors[`${mode}-password`]} showPassword={visible[`${mode}-password`]} onToggle={()=>toggle(`${mode}-password`)} />
+          <Field id={`${mode}-password`} label="Password" name="password" type="password" placeholder={signup?"12+ characters, mixed case and a number":"Enter your password"} autoComplete={signup?"new-password":"current-password"} icon="lock" minLength={signup?12:1} error={errors[`${mode}-password`]} showPassword={visible[`${mode}-password`]} onToggle={()=>toggle(`${mode}-password`)} />
           {signup?<Field id="signup-confirm-password" label="Confirm password" name="confirm-password" type="password" placeholder="Enter your password again" autoComplete="new-password" icon="lock" error={errors["signup-confirm-password"]} showPassword={visible["signup-confirm-password"]} onToggle={()=>toggle("signup-confirm-password")} />:<div className="form-options"><label className="remember-option"><input type="checkbox" name="remember" /><span className="custom-check" aria-hidden="true" /><span>Remember me</span></label><button className="inline-link" type="button" data-auth-action="forgot" onClick={()=>action("forgot")}>Forgot password?</button></div>}
           <button className={`primary-button ${signup?"signup-submit":""}`} type="submit"><span>{signup?"Create account":"Sign in"}</span><AuthIcon name="arrow" /></button>
           {!signup&&<><div className="separator"><span>OR CONTINUE WITH</span></div><button className="google-button" type="button" data-auth-action="google" onClick={()=>action("google")}><AuthIcon name="google" /><span>Continue with Google</span></button></>}
@@ -80,7 +88,7 @@ export default function AuthPage({mode}) {
         <p className="auth-status" data-state={status.state||undefined} id={`${mode}-status`} role="status" aria-live="polite">{status.message}</p>
       </form>
       <p className="signup-prompt">{signup?"Already have an account?":"New to AUTOX?"} <a href={signup?"login.html":"signup.html"}>{signup?"Sign in":"Create an account"}</a></p>
-      <p className="card-footnote"><AuthIcon name="lock" /> {signup?"Account creation is not connected yet. Your details are not stored.":"Your details stay private. Authentication is not connected yet."}</p>
+      <p className="card-footnote"><AuthIcon name="lock" /> {auth.loading?"Checking your secure session…":"Accounts use the connected API when it is running. Passwords are never saved in browser storage."}</p>
     </section>
   </main>;
 }
