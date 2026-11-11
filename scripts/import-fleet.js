@@ -1,6 +1,7 @@
+import "dotenv/config";
 import { readFile } from "node:fs/promises";
 import { PrismaMariaDb } from "@prisma/adapter-mariadb";
-import { PrismaClient } from "../src/generated/prisma/client.js";
+import { PrismaClient } from "../src/generated/prisma/client.ts";
 
 const source = await readFile(new URL("../fleet-data.js", import.meta.url), "utf8");
 const match = source.match(/window\.AUTOX_FLEET_DEFAULTS\s*=\s*(\[.*\])\s*;\s*$/s);

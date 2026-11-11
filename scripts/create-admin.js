@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { PrismaMariaDb } from "@prisma/adapter-mariadb";
-import { PrismaClient } from "../src/generated/prisma/client.js";
+import { PrismaClient } from "../src/generated/prisma/client.ts";
 import { hashPassword } from "../src/server/security.js";
 
 const email = String(process.env.ADMIN_EMAIL || "").trim().toLowerCase();
